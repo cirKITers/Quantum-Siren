@@ -7,17 +7,17 @@
 #SBATCH --nodes=1
 #
 # we only need on 1 cpu at a time
-#SBATCH --ntasks=1
+#SBATCH --ntasks=8
 #
 # expected duration of the job
 #              hh:mm:ss
-#SBATCH --time=10:00:00
+#SBATCH --time=20:00:00
 # 
 # partition the job will run on
 #SBATCH --partition single
 # 
 # expected memory requirements
-#SBATCH --mem=8000MB
+#SBATCH --mem=16000MB
 #
 # output path
 #SBATCH --output="logs/slurm/slurm-%j.out"
