@@ -26,6 +26,7 @@ scikit-image = "^0.21.0"
 ipykernel = "^6.25.0"
 matplotlib = "^3.7.2"
 torch = [
+# Uncomment the following line once this issue is resolved: https://github.com/python-poetry/poetry/issues/7748 # noqa
 #    {version = "2.1.0", source = "torch_gpu", markers = "extra == 'gpu'"},
     {version = "2.1.0+cpu", source = "torch_cpu", markers = "extra != 'gpu'"}
 ]
