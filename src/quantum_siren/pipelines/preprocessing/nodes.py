@@ -12,7 +12,16 @@ import skimage
 
 import math
 
+import git
+
+import mlflow
+
+
 import plotly.graph_objects as go
+
+import logging
+
+log = logging.getLogger(__name__)
 
 
 def get_cameraman_tensor(sidelength):
@@ -114,3 +123,17 @@ def gen_ground_truth_fig(img):
     # mlflow.log_figure(fig, f"ground_truth.html")
 
     return {"ground_truth_fig": ground_truth_fig}
+
+
+def log_git_repo(git_hash_identifier: str):
+    repo = git.Repo(search_parent_directories=True)
+    sha = repo.head.object.hexsha
+    if repo.is_dirty(untracked_files=True):
+        log.warning(
+            "Uncommited and/or untracked files found. Please cleanup before running experiments"
+        )
+    else:
+        log.info(f"Repository was found to be clean with sha {sha}")
+    mlflow.set_tag(git_hash_identifier, sha)
+
+    return {}
