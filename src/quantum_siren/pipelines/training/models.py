@@ -89,6 +89,7 @@ class Model(torch.nn.Module):
         self.params = torch.nn.Parameter(
             torch.rand(size=(n_layers, n_qubits, n_gates_per_layer), requires_grad=True)
         )
+        log.debug(f"Initialized Params: {self.params.size()}")
 
     def circuit(self, weights, inputs=None):
         if inputs is None:
