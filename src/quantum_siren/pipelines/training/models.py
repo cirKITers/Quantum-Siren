@@ -41,23 +41,33 @@ class Model(torch.nn.Module):
             assert (
                 output_interpretation < n_qubits
             ), f"Output interpretation parameter {output_interpretation} can either be a qubit (integer smaller n_qubits) or 'all'"
+            self.measurements = [output_interpretation]
+        else:
+            self.measurements = range(self.n_qubits)
 
         self.output_interpretation = output_interpretation
 
         self.data_reupload = data_reupload
 
-        os.environ["OMP_NUM_THREADS"] = f"{max_threads}"
-        if n_qubits <= 6:
-            log.debug(
-                f"Using default.qubit backend with {max_threads} threads and {max_processes} processes"
-            )
-
-            dev = qml.device(
-                "default.qubit",
-                wires=self.n_qubits,
-                shots=self.shots,
-                max_workers=self.max_processes,
-            )
+        if max_threads > 0:
+            os.environ["OMP_NUM_THREADS"] = f"{max_threads}"
+            log.debug("Setting OMP_NUM_THREADS to: " + os.environ["OMP_NUM_THREADS"])
+        if n_qubits <= 10:
+            if max_processes > 0:
+                log.debug(f"Using default.qubit backend with {max_processes} processes")
+                dev = qml.device(
+                    "default.qubit",
+                    wires=self.n_qubits,
+                    shots=self.shots,
+                    max_workers=self.max_processes,
+                )
+            else:
+                log.debug(f"Using default.qubit backend")
+                dev = qml.device(
+                    "default.qubit",
+                    wires=self.n_qubits,
+                    shots=self.shots,
+                )
         else:
             batch_obs = (
                 True if n_qubits > 20 else False
@@ -85,10 +95,13 @@ class Model(torch.nn.Module):
             n_gates_per_layer=self.vqc(None),
         )
 
+        log.debug(f"Circuit:\n{qml.draw(self.qnode)(self.params)}")
+
     def initialize_params(self, n_qubits, n_layers, n_gates_per_layer):
         self.params = torch.nn.Parameter(
             torch.rand(size=(n_layers, n_qubits, n_gates_per_layer), requires_grad=True)
         )
+        self._inputs = torch.zeros(2)
         log.debug(f"Initialized Params: {self.params.size()}")
 
     def circuit(self, weights, inputs=None):
@@ -109,7 +122,7 @@ class Model(torch.nn.Module):
 
             self.vqc(l_params)
 
-        return [qml.expval(qml.PauliZ(i)) for i in range(self.n_qubits)]
+        return [qml.expval(qml.PauliZ(i)) for i in self.measurements]
 
     def predict(self, context, model_input):
         if type(model_input) != torch.Tensor:
@@ -130,10 +143,7 @@ class Model(torch.nn.Module):
             #     out = pool.starmap(self.qnode, [[params, coord] for coord in model_input])
 
             for i, coord in enumerate(model_input):
-                if self.output_interpretation == "all":
-                    out[i] = torch.mean(self.qlayer(coord), axis=0)
-                else:
-                    out[i] = self.qlayer(coord)[self.output_interpretation]
+                out[i] = torch.mean(self.qlayer(coord), axis=0)
         else:
             out = self.qlayer(model_input)[-1]
 

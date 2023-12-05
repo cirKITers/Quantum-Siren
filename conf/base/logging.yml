@@ -35,7 +35,7 @@ loggers:
     level: INFO
 
   quantum_siren:
-    level: INFO
+    level: DEBUG
 
 root:
   handlers: [rich, info_file_handler]

@@ -5,8 +5,8 @@
 # Link: https://docs.kedro.org/en/0.18.12/kedro_project_setup/configuration.html#parameters
 
 training: #see globals.yml for adjustment of n_qubits, n_layers,...
-  n_qubits: 10
-  n_layers: 22
+  n_qubits: 8
+  n_layers: 1
   vqc_ansatz: "circuit_19"
   iec_ansatz: "spread_layers"
   data_reupload: 1.0
@@ -16,10 +16,10 @@ training: #see globals.yml for adjustment of n_qubits, n_layers,...
   steps: 150
   report_figure_every_n_steps: 20
   loss: "mse" #mse, fft_ssim, ssim, psnr
-  output_interpretation: "all" # "all" or a specific qubit number
+  output_interpretation: 0 # "all" or a specific qubit number
   seed: 1111
 
   # The following settings are ignored when n_qubits>6 because 
   # the fw then uses lightningQubit backend
-  max_processes: 4 # Set to "None" to disable multiprocessing
-  max_threads: 4 # Find a balance such that max_processes*max_threads <= n_vcpus
+  max_processes: -1 # Set to "None" to disable multiprocessing
+  max_threads: -1 # Find a balance such that max_processes*max_threads <= n_vcpus
