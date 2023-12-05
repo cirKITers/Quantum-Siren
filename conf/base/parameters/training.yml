@@ -16,7 +16,7 @@ training: #see globals.yml for adjustment of n_qubits, n_layers,...
   steps: 150
   report_figure_every_n_steps: 20
   loss: "mse" #mse, fft_ssim, ssim, psnr
-  output_interpretation: 0 # "all" or a specific qubit number
+  output_interpretation: "all" # "all" or a specific qubit number
   seed: 1111
 
   # The following settings are ignored when n_qubits>6 because 
