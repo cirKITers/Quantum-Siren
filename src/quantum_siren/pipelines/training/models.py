@@ -52,7 +52,7 @@ class Model(torch.nn.Module):
         if max_threads > 0:
             os.environ["OMP_NUM_THREADS"] = f"{max_threads}"
             log.debug("Setting OMP_NUM_THREADS to: " + os.environ["OMP_NUM_THREADS"])
-        if n_qubits <= 10:
+        if n_qubits <= 20:
             if max_processes > 0:
                 log.debug(f"Using default.qubit backend with {max_processes} processes")
                 dev = qml.device(
