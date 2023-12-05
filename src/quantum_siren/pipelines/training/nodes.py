@@ -189,7 +189,6 @@ class Instructor:
                 # axes[1].imshow(img_grad.norm(dim=-1).cpu().view(sidelength,sidelength).detach().numpy())
                 # axes[2].imshow(img_laplacian.cpu().view(sidelength,sidelength).detach().numpy())
                 # plt.show()
-                log.debug(f"Step {step}:\t Loss: {loss_val.item()}")
 
             self.optim.zero_grad()
             loss_val.backward()

@@ -17,6 +17,9 @@ training: #see globals.yml for adjustment of n_qubits, n_layers,...
   report_figure_every_n_steps: 20
   loss: "mse" #mse, fft_ssim, ssim, psnr
   output_interpretation: "all" # "all" or a specific qubit number
-  max_processes: 4
-  max_threads: 4
   seed: 1111
+
+  # The following settings are ignored when n_qubits>6 because 
+  # the fw then uses lightningQubit backend
+  max_processes: 4 # Set to "None" to disable multiprocessing
+  max_threads: 4 # Find a balance such that max_processes*max_threads <= n_vcpus

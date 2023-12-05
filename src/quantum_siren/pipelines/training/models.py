@@ -46,8 +46,12 @@ class Model(torch.nn.Module):
 
         self.data_reupload = data_reupload
 
+        os.environ["OMP_NUM_THREADS"] = f"{max_threads}"
         if n_qubits <= 6:
-            os.environ["OMP_NUM_THREADS"] = f"{max_threads}"
+            log.debug(
+                f"Using default.qubit backend with {max_threads} threads and {max_processes} processes"
+            )
+
             dev = qml.device(
                 "default.qubit",
                 wires=self.n_qubits,
@@ -55,10 +59,18 @@ class Model(torch.nn.Module):
                 max_workers=self.max_processes,
             )
         else:
+            batch_obs = (
+                True if n_qubits > 20 else False
+            )  # only enable for large n_qubits
+            log.debug(
+                f"Using lightning.qubit backend with {max_threads} threads. Batch Obs: {batch_obs}"
+            )
+
             dev = qml.device(
                 "lightning.qubit",
                 wires=self.n_qubits,
                 shots=self.shots,
+                batch_obs=batch_obs,
             )
 
         self.qnode = qml.QNode(self.circuit, dev, interface="torch")
