@@ -8,7 +8,7 @@ training: #see globals.yml for adjustment of n_qubits, n_layers,...
   n_qubits: 8
   n_layers: 1
   vqc_ansatz: "circuit_19"
-  iec_ansatz: "spread_layers"
+  iec_ansatz: "default"
   data_reupload: 1.0
   learning_rate: 0.05
   shots: "None"
