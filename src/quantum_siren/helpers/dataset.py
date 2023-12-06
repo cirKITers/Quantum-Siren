@@ -10,18 +10,20 @@ modo:
 from os.path import isfile, basename
 from typing import Any, Dict
 import torch
-from kedro.io import AbstractDataSet
+from kedro.io import AbstractDataset
 
 from quantum_siren.pipelines.training.models import Model
 
 import mlflow
 
-class MlFlowPlotlyArtifact(AbstractDataSet):
+
+class MlFlowPlotlyArtifact(AbstractDataset):
     """
     This class provides a central point for reporting figures via MlFlow instead of writing them via Kedro.
     Idea is, that kedro still handles the figure data and reporting takes form of individual catalog entries.
     This way the kedro "spirit" is preserved while using MlFlow for experiment tracking.
     """
+
     def _describe(self) -> Dict[str, Any]:
         return dict(
             filepath=self._filepath,
@@ -61,7 +63,8 @@ class MlFlowPlotlyArtifact(AbstractDataSet):
     def _exists(self) -> bool:
         return isfile(self._filepath)
 
-class TorchLocalModel(AbstractDataSet):
+
+class TorchLocalModel(AbstractDataset):
     def _describe(self) -> Dict[str, Any]:
         return dict(
             filepath=self._filepath,

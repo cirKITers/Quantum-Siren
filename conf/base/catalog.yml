@@ -6,7 +6,15 @@
 model:
   type: quantum_siren.helpers.dataset.TorchLocalModel
   filepath: data/06_models/model.pt
-  load_args: {"n_qubits": "${n_qubits}", "shots": "${shots}", "vqc_ansatz": "${vqc_ansatz}", "iec_ansatz": "${iec_ansatz}", "n_layers": "${n_layers}", "data_reupload": "${data_reupload}"}
+  load_args: 
+      n_qubits: "${runtime_params:training.n_qubits, ${globals:training.n_qubits}}"
+      shots: "${runtime_params:training.shots, ${globals:training.shots}}"
+      vqc_ansatz: "${runtime_params:training.vqc_ansatz, ${globals:training.vqc_ansatz}}"
+      iec_ansatz: "${runtime_params:training.iec_ansatz, ${globals:training.iec_ansatz}}"
+      n_layers: "${runtime_params:training.n_layers, ${globals:training.n_layers}}"
+      data_reupload: "${runtime_params:training.data_reupload, ${globals:training.data_reupload}}"
+      output_interpretation: "${runtime_params:training.output_interpretation, ${globals:training.output_interpretation}}"
+      max_workers: "${runtime_params:training.max_workers, ${globals:training.max_workers}}"
 
 # Intermediate Data
 
