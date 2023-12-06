@@ -11,13 +11,13 @@
 #
 # expected duration of the job
 #              hh:mm:ss
-#SBATCH --time=20:00:00
+#SBATCH --time=30:00:00
 # 
 # partition the job will run on
 #SBATCH --partition single
 # 
 # expected memory requirements
-#SBATCH --mem=16000MB
+#SBATCH --mem=32000MB
 #
 # output path
 #SBATCH --output="logs/slurm/slurm-%j.out"
