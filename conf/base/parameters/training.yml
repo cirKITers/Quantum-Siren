@@ -5,15 +5,17 @@
 # Link: https://docs.kedro.org/en/0.18.12/kedro_project_setup/configuration.html#parameters
 
 training: #see globals.yml for adjustment of n_qubits, n_layers,...
-  n_qubits: ${n_qubits}
-  n_layers: ${n_layers}
-  vqc_ansatz: ${vqc_ansatz}
-  iec_ansatz: ${iec_ansatz}
-  data_reupload: ${data_reupload}
-  learning_rate: ${learning_rate}
-  shots: ${shots}
+  n_qubits: 4
+  n_layers: 22
+  vqc_ansatz: "circuit_19"
+  iec_ansatz: "spread_layers"
+  data_reupload: 1.0
+  learning_rate: 0.05
+  shots: "None"
   optimizer: "Adam"
-  steps: 300
+  steps: 150
   report_figure_every_n_steps: 20
   loss: "mse" #mse, fft_ssim, ssim, psnr
+  output_interpretation: ${output_interpretation}
   seed: 1111
+  max_workers: "None" # sets the number of workers that the pennylane simulators spawns
