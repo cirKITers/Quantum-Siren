@@ -41,9 +41,7 @@ def create_pipeline(**kwargs) -> Pipeline:
     nd_pixelwise_diff = node(
         pixelwise_difference,
         inputs={"prediction": "prediction", "ground_truth": "ground_truth"},
-        outputs={
-            "pixelwise_diff_fig":"pixelwise_diff_fig"
-        },
+        outputs={"pixelwise_diff_fig": "pixelwise_diff_fig"},
     )
 
     nd_plot_gradients = node(
@@ -54,10 +52,10 @@ def create_pipeline(**kwargs) -> Pipeline:
             "coordinates": "coordinates",
         },
         outputs={
-            "pred_gradients_fig":"pred_gradients_fig",
-            "pred_laplacian_fig":"pred_laplacian_fig",
-            "gt_gradients_fig":"gt_gradients_fig",
-            "gt_laplacian_fig":"gt_laplacian_fig",
+            "pred_gradient_fig": "pred_gradient_fig",
+            "pred_laplacian_fig": "pred_laplacian_fig",
+            "gt_gradient_fig": "gt_gradient_fig",
+            "gt_laplacian_fig": "gt_laplacian_fig",
         },
     )
 
@@ -67,8 +65,22 @@ def create_pipeline(**kwargs) -> Pipeline:
             nd_upscaling,
             nd_pixelwise_diff,
             nd_plot_gradients,
-            node(calculate_spectrum, inputs={"values": "ground_truth"}, outputs={"spectrum_abs_fig":"gt_spectrum_abs_fig", "spectrum_phase_fig":"gt_spectrum_phase_fig"}),
-            node(calculate_spectrum, inputs={"values": "prediction"}, outputs={"spectrum_abs_fig":"pred_spectrum_abs_fig", "spectrum_phase_fig":"pred_spectrum_phase_fig"}),
+            node(
+                calculate_spectrum,
+                inputs={"values": "ground_truth"},
+                outputs={
+                    "spectrum_abs_fig": "gt_spectrum_abs_fig",
+                    "spectrum_phase_fig": "gt_spectrum_phase_fig",
+                },
+            ),
+            node(
+                calculate_spectrum,
+                inputs={"values": "prediction"},
+                outputs={
+                    "spectrum_abs_fig": "pred_spectrum_abs_fig",
+                    "spectrum_phase_fig": "pred_spectrum_phase_fig",
+                },
+            ),
         ],
         inputs={
             "coordinates": "coordinates",

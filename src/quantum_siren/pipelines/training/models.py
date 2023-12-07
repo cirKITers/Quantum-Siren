@@ -49,7 +49,8 @@ class Model(torch.nn.Module):
             self._inputs = inputs
 
         dru = torch.zeros(len(weights))
-        dru[:: int(1 / self.data_reupload)] = 1
+        if self.data_reupload != 0:
+            dru[:: int(1 / self.data_reupload)] = 1
 
         for l, l_params in enumerate(weights):
             if l == 0 or dru[l] == 1:
