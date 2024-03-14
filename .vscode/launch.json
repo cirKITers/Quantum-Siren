@@ -9,7 +9,24 @@
             "type": "python",
             "request": "launch",
             "module": "kedro",
-            "args": ["run", "--pipeline", "__default__"],
+            "args": [
+                "run",
+                "--pipeline",
+                "__default__"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Kedro: Slurm",
+            "type": "python",
+            "request": "launch",
+            "module": "kedro",
+            "args": [
+                "run",
+                "--pipeline",
+                "slurm"
+            ],
             "console": "integratedTerminal",
             "justMyCode": true
         },
